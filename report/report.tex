@@ -467,16 +467,6 @@ To see why any choice of indexation is arbitrary from the point of view of secur
 
 In many stack-based VMs, at most one element can be pushed onto the stack per clock cycle. Therefore, first pushing elements onto the stack and then adding them into the sponge state would require a large number of operations: in addition to push and add operations, stack manipulation operations are also necessary to arrange the stack correctly. In the overwrite mode, we can drop rate elements from the stack and then simply push the new rate elements onto the stack. This procedure is strictly more efficient than the procedure when elements are absorbed through addition as it requires no additional stack manipulation operations.
 
-The alternative of to overwriting the rate part of the sponge that does not blow up the number of cycles, is to introduce a single instruction which adds elements to be absorbed to the top $r$ elements of the stack. This alternative a) require one extra instruction, and b) would make the original elements inaccessible, for instance if they need to be saved to memory. For example, to invert a hash non-deterministically, one might like to do something like this:
-
-\item Absorb $r$ into the top of the stack.
-\item Save the top $r$ stack elements to memory.
-\item Apply the Rescue-XLIX permutation to the top $m$ elements of the stack.
-
-\end{enumerate}
-
-If in step (1) elements are absorbed through addition rather than overwriting, step (2) becomes impossible.
-\end{comment}
 The security of overwrite mode has been analyzed e.g. in \S~4.3 of the Sponge SoK~\cite{sponge}.
 
 \subsection{Padding Rule}
