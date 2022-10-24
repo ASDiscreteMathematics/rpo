@@ -393,7 +393,7 @@ The reason why we feel confident recommending $N=7$ is threefold:
  
 \subsection{Order of Operations for Better Folding}
 
-On of the costly steps in both the prover and the verifier of a STARK is the computation of the vector of values of AIR transition constraint polynomials for two consecutive rows of the algebraic execution trace (AET). The AIR constraints are evaluated point by point on the codewords that represent the trace. The generated codewords are different from zero except in locations that correspond to a row in the AET and its successor.
+One of the costly steps in both the prover and the verifier of a STARK is the computation of the vector of values of AIR transition constraint polynomials for two consecutive rows of the algebraic execution trace (AET). The AIR constraints are evaluated point by point on the codewords that represent the trace. The generated codewords are different from zero except in locations that correspond to a row in the AET and its successor.
 
 Rescue and Rescue-Prime have S-boxes that send $x$ to $x^{\frac{1}{\alpha}}$, where $\alpha$ is the smallest invertible non-trivial power map degree. To avoid a very high degree AIR, the Marvellous paper~\cite{cryptoeprint:2019/426} introduced \emph{folding}. This technique involves arithmetizing the evolution of the state forwards in time for a part of the time step, and backwards in time for the remaining part. By traversing over the $x \mapsto x^{\frac{1}{\alpha}}$ map backwards, the degree of the resulting AIR drops to $\alpha$. The equation is found by equating two distinct expressions for the value of the same wire in the middle. The corresponding polynomial is found by moving all terms to the left hand side.
 
