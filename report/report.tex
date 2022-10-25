@@ -50,8 +50,11 @@ showstringspaces=false} % no special string spaces
 \begin{tabular}{c}Bobbin Threadbare \\ \small \texttt{bobbinth@polygon.technology} \\ \small Polygon \end{tabular} 
 }
 
+
 \begin{document}
 \maketitle
+
+\textbf{Keywords:} Arithmetization-Oriented, Hash function, Rescue Prime, Merkle tree hashing
 
 \section{Introduction}
 \label{section:intro}
@@ -62,7 +65,7 @@ This context induces unique design constraints, which this specification address
 
 \section{Specification}
 
-The starting point is Rescue-Prime~\cite{cryptoeprint:2020/1143}, and we assume the reader is familiar with this docment. What is described here is the deviations from this standard. A complete reference implementation in SageMath serves a companion to this specification. It is available at \url{https://github.com/ASDiscreteMathematics/rpo}.
+The starting point is Rescue-Prime~\cite{cryptoeprint:2020/1143}, and we assume the reader is familiar with this docment. What is described here is the deviations from this standard. A complete reference implementation in SageMath serves as a companion to this specification. It is available at \url{https://github.com/ASDiscreteMathematics/rpo}.
 
 \subsection{Integer Parameters}
 
@@ -474,7 +477,7 @@ A sponge function is defined to absorb $r$ elements from the input in between ap
 
 We are interested in an efficient two-to-one hashing as a primary optimization goal. Therefore, we would like to avoid the costly overhead of an additional permutation call to accomodate the padding. Inspired by~\cite{DBLP:journals/cryptography/Hirose18} and similar to~\cite{DBLP:journals/iacr/BouvierBCPV22} we abuse the notion of domain separation. 
 
-We consider messages with length a multiple of $r$ as belonging to the 0-domain, and all other message as belonging to the 1-domain. As messages in the 0-domain have a predetermined length that is already a multiple of $r$ elements, no further padding is required. For messages in the 1-domain, we apply ``the simplest padding rule''. The domain is encoded in the first capacity element which results one a 1-bit security loss because now the attacker has two domains in which to search for ``valid'' preimages. 
+We consider messages with length a multiple of $r$ as belonging to the 0-domain, and all other message as belonging to the 1-domain. As messages in the 0-domain have a predetermined length that is already a multiple of $r$ elements, no further padding is required. For messages in the 1-domain, we apply ``the simplest padding rule''. The domain is encoded in the first capacity element which results in a 1-bit security loss because now the attacker has two domains in which to search for ``valid'' preimages. 
 
 
 \vspace{0.25cm}
