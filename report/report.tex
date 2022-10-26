@@ -322,7 +322,29 @@ Rescue-Prime is secure when instantiated with \emph{any} MDS matrix. Therefore, 
 \item[2)] Does the structure enable faster computation of matrix-vector products?
 \end{itemize}
 
-As for question (1), we were granted access to Polygon Zero's MDS test procedure and were able to verify the correctness of this function. As a result, we are confident that these circulant matrices specified above are in fact MDS. 
+\subsubsection{MDS Test}
+
+As for question (1), we were granted access to Polygon Zero's MDS test procedure and were able to verify the correctness of this function. As a result, we are confident that the circulant matrices specified above are in fact MDS.
+
+In the interest of disseminating science, we present a self-contained description of this algorithm here. Credit for this function goes to Polygon Zero~\cite{polygon-zero}.
+
+The key insight is that the standard cofactor expansion method for computing determinants induces a dependency relation on intermediate computation results. The resulting graph is directed and acyclic. As a consequence, it allows for a dynamic programming approach.
+
+Specifically, the dependency relation is this: to compute the determinant of a $(k+1) \times (k+1)$ matrix, you need to select a row or column and combine it with the $(k+1)$-many $k \times k$ determinants of minors that do not cover that row or column. Therefore, \emph{if you have the determinants of all $k \times k$ submatrices, computing the determinants of all $(k+1) \times (k+1)$ submatrices is straightforward}.
+
+This observation suggests the following strategy: Compute the determinants of all $2 \times 2$ submatrices. Use those values to compute the determinants of all $3 \times 3$ submatrices. And so on until the final dimension has been reached. For every computed determinant, verify that its value is nonzero.
+
+This method tests a matrix for hyperinvertibility, which is the property that every square submatrix is invertible. Hyperinvertibility is equivalent to MDS. The next lemma and proof are folklore knowledge.
+
+\textbf{Lemma 1.} A matrix is hyperinvertible iff it is MDS.
+
+\textit{Proof.} \underline{Hyperinvertibility $\Rightarrow$ MDS.} Let $M$ be an $m \times m$ hyperinvertible matrix. If there is nonzero a codeword $(\mathbf{x} \vert \mathbf{x}M)$ whose Hamming weight is less than $m+1$, then $\textnormal{\textsc{HW}}(\mathbf{x}M) < m+1 - \textnormal{\textsc{HW}}(\mathbf{x})$. Let $\bar{\mathbf{x}}$ denote $\mathbf{x}$ after dropping the zeros, and $\bar{M}$ the $\textnormal{\textsc{HW}}(\mathbf{x}) \times m$ matrix whose corresponding rows are dropped. Clearly, $\bar{\mathbf{x}}\bar{M} = \mathbf{x} M$ and so $\textnormal{\textsc{HW}}(\bar{\mathbf{x}}\bar{M})< m+1 - \textnormal{\textsc{HW}}(\mathbf{x})$. Equivalently, $\bar{\mathbf{x}}\bar{M}$ has to contain at least $\textnormal{\textsc{HW}}(\mathbf{x})$ zeros. Therefore, some $\textnormal{\textsc{HW}}(\mathbf{x}) \times \textnormal{\textsc{HW}}(\mathbf{x})$ submatrix of $\bar{M}$ and of $M$ sends $\bar{\mathbf{x}}$ to $\mathbf{0}$, which can only happen if it is singular, contradicting the assumption that $M$ is hyperinvertible.
+
+\underline{MDS $\Rightarrow$ hyperinvertibility.} Let $\mathcal{C} \subset \mathbb{F}^{2m}$ be an MDS code of dimension $m$ and $(I \vert M)$ its systematic generator matrix. Then $\mathcal{C} = \{ (\mathbf{x} \vert \mathbf{x} M) \, \vert \, \mathbf{x} \in \mathbb{F}^m \}$. If $M$ is not hyperinvertible, then some square $k \times k$ submatrix $\tilde{M}$ is singular. Then build a codeword as follows. Set $\mathbf{x}$ to a (left-) kernel vector of $\tilde{M}$ in those coordinates that correspond to $\tilde{M}$, and to 0 in other coordinates. The codeword $(\mathbf{x} \vert \mathbf{x} M) \in \mathcal{C}$ has at least $m-k$ zeros in the first half and at least $k$ zeros in the second half, so its Hamming weight is at most $m$, contradicting the assumption of $\mathcal{C}$ being MDS. \hfill $\square$
+
+To find a suitable circulant MDS matrix, it suffices to sample the first row from a suitable distribution, test the resulting circulant matrix for hyperinvertibility, and repeat if it does not pass the test.
+
+\subsubsection{Fast Multiplication}
 
 As for question (2), the answer is in the affirmative. Let $R_p = \frac{\mathbb{Z}_p[X]}{\langle X^m - 1\rangle}$ be the ring of polynomials with multiplication modulo $X^m - 1$. There is an isomorphism between the elements of $R_p$ and circulant $m \times m$ matrices over $\mathbb{Z}_p$ given by
 \begin{equation}
@@ -333,7 +355,7 @@ a_1 & a_0 & & a_2 \\
 a_{m-1} & a_{m-2} & \cdots & a_0
 \end{matrix} \right) \enspace .
 \end{equation}
-A fast way to multiply polynomials modulo $X^m - 1$ translates to a fast circulant matrix times vector multiplication procedure.
+A fast way to multiply polynomials modulo $X^m - 1$ translates to a fast circulant matrix times vector multiplication procedure. We describe below two methods for fast polynomial multiplication modulo $X^m - 1$.
 
 Note that the coefficient vector of the polynomial corresponds to the first column of the matrix, and not the first row. To translate between row and column, one needs to reverse the entire vector except for the element at the first position.
 
