@@ -43,7 +43,7 @@ showstringspaces=false} % no special string spaces
 %\author{Tomer Ashur$^1$ \and Willi Meier$^2$ \and Alan Szepieniec$^3$ \and Bobbin Threadbare$^4$ \and Al Kindi}
 
 \author{
-\begin{tabular}{c}Tomer Ashur \\ \small \texttt{tomer@cryptomeria.tech} \\ \small Cryptomeria BV \end{tabular}
+\begin{tabular}{c}Tomer Ashur \\ \small \texttt{tomer@cryptomeria.tech} \\ \small Cryptomeria \end{tabular}
 \begin{tabular}{c}Al Kindi \\ \small \texttt{al.kindi@protonmail.com} \\ \small Polygon \end{tabular}
 \begin{tabular}{c}Willi Meier \\ \small \texttt{willi.meier@fhnw.ch} \\ \small FHNW \end{tabular} \\ \\
 \begin{tabular}{c}Alan Szepieniec \\ \small \texttt{alan@asdm.gmbh} \\ \small AS Discrete Mathematics GmbH \end{tabular}
@@ -59,7 +59,7 @@ showstringspaces=false} % no special string spaces
 \section{Introduction}
 \label{section:intro}
 
-This note specifies two instances of a hash function obtained from tailoring Rescue-Prime to a specific context. The context in question is native hashing in a STARK~\cite{cryptoeprint:2018/046} Virtual Machine such as Miden~\cite{miden}.
+This note specifies two instances of a hash function obtained from applying the Marvellous design strategy~\cite{cryptoeprint:2019/426} to a specific context. The context in question is native hashing in a STARK~\cite{cryptoeprint:2018/046} Virtual Machine such as Miden~\cite{miden}.
 
 This context induces unique design constraints, which this specification addresses. The hash function must be defined over the same field that the VM is defined over, which is the prime field with  $p = 2^{64} - 2^{32} + 1$ elements. One of the main use cases is Merkle tree hashing, and so the hash function must support an interface for efficient two-to-one hashing. There are two parameter sets, targeting security level 128 and 160, respectively. 
 
@@ -106,7 +106,7 @@ The function \texttt{get\_round\_constants} of the reference implementation acco
 
 \subsection{MDS Matrix}
 
-The MDS matrix is circulant. Its first row is $[7, 23, 8, 26, 13, 10, 9, 7, 6, 22, 21, 8]$ for 128 bits of security, and 
+The MDS matrix is circulant. Its first row is $$[7, 23, 8, 26, 13, 10, 9, 7, 6, 22, 21, 8]$$ for 128 bits of security, and 
 $$ [256, 2, 1073741824, 2048, 16777216, 128, 8, 16, 524288, 4194304, 1, 268435456, 1, 1024, 2, 8192] $$
 for 160.
 
@@ -177,7 +177,7 @@ The padding rule makes a distinction depending on whether the length of the inpu
     \end{itemize}
 \end{itemize}
 
-In either case the sponge methodology applies: absorb $r$ elements from the input in between applications of the permutation, until no input is left.
+\noindent In either case the sponge methodology applies: absorb $r$ elements from the input in between applications of the permutation, until no input is left.
 
 \subsection{Overwrite Mode}
 
